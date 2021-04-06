@@ -5,6 +5,7 @@ class AdaptiveCardRenderer {
     static let shared = AdaptiveCardRenderer()
     weak var actionDelegate: AdaptiveCardActionDelegate?
     weak var resolverDelegate: AdaptiveCardResourceResolver?
+    weak var adaptiveCardThemeDelegate: AdaptiveCardHostAppThemeDelegate?
     
     func renderAdaptiveCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat) -> NSView {
         var style: ACSContainerStyle = .default
@@ -36,6 +37,7 @@ class AdaptiveCardRenderer {
         }
         rootView.delegate = self
         rootView.resolverDelegate = self
+        rootView.hostAppThemeDelegate = self
            
         for (index, element) in card.getBody().enumerated() {
             let isFirstElement = index == 0
@@ -91,5 +93,11 @@ extension AdaptiveCardRenderer: ACRViewResourceResolverDelegate {
     
     func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize? {
         resolverDelegate?.adaptiveCard(adaptiveCard, dimensionsForImageWith: url)
+    }
+}
+
+extension AdaptiveCardRenderer: ACRViewHostAppThemeDelegate {
+    func isDarkMode() -> Bool {
+        adaptiveCardThemeDelegate?.isDarkMode() ?? false
     }
 }

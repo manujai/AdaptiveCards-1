@@ -11,11 +11,16 @@ protocol ACRViewResourceResolverDelegate: AnyObject {
     func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String)
 }
 
+public protocol ACRViewHostAppThemeDelegate: AnyObject {
+    func isDarkMode() -> Bool
+}
+
 class ACRView: ACRColumnView {
     typealias ShowCardItems = (id: NSNumber, button: NSButton, showCard: NSView)
     
     weak var delegate: ACRViewDelegate?
     weak var resolverDelegate: ACRViewResourceResolverDelegate?
+    weak var hostAppThemeDelegate: ACRViewHostAppThemeDelegate?
     weak var parent: ACRView?
 
     private (set) var targets: [TargetHandler] = []
@@ -57,6 +62,10 @@ class ACRView: ACRColumnView {
     
     func addTarget(_ target: TargetHandler) {
         targets.append(target)
+    }
+    
+    func isHostAppDarkTheme() -> Bool {
+        return hostAppThemeDelegate?.isDarkMode() ?? false
     }
     
     func addInputHandler(_ handler: InputHandlingViewProtocol) {

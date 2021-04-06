@@ -9,6 +9,8 @@ open class InputDateRenderer: NSObject, BaseCardElementRendererProtocol {
             logError("Element is not of type ACSDateInput")
             return NSView()
         }
+        
+        print(rootView.isHostAppDarkTheme())
 
         // setting up basic properties for Input.Date Field
         let inputField: ACRDateField = {
@@ -27,3 +29,4 @@ open class InputDateRenderer: NSObject, BaseCardElementRendererProtocol {
         return inputField
     }
 }
+x

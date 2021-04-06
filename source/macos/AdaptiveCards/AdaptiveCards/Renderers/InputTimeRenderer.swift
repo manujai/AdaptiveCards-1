@@ -28,6 +28,9 @@ open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
         }()
         
         rootView.addInputHandler(inputField)
+        let appearance = NSAppearance.current
+        let isDark = appearance?.name.rawValue.contains("Dark")
+        print(isDark)
         return inputField
     }
     // if input time doesn't have seconds then this function appends seconds' value as 00

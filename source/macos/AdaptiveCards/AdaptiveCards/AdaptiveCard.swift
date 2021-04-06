@@ -11,6 +11,10 @@ public protocol AdaptiveCardResourceResolver: AnyObject {
     func adaptiveCard(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String)
 }
 
+public protocol AdaptiveCardHostAppThemeDelegate: AnyObject {
+    func isDarkMode() -> Bool
+}
+
 enum HostConfigParseError: Error {
     case resultIsNil, configIsNil
 }
@@ -30,9 +34,10 @@ open class AdaptiveCard {
         return .success(hostConfig)
     }
     
-    public static func render(card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat, actionDelegate: AdaptiveCardActionDelegate?, resourceResolver: AdaptiveCardResourceResolver?) -> NSView {
+    public static func render(card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat, actionDelegate: AdaptiveCardActionDelegate?, resourceResolver: AdaptiveCardResourceResolver?, adaptiveCardThemeDelegate: AdaptiveCardHostAppThemeDelegate?) -> NSView {
         AdaptiveCardRenderer.shared.actionDelegate = actionDelegate
         AdaptiveCardRenderer.shared.resolverDelegate = resourceResolver
+        AdaptiveCardRenderer.shared.adaptiveCardThemeDelegate = adaptiveCardThemeDelegate
         return AdaptiveCardRenderer.shared.renderAdaptiveCard(card, with: hostConfig, width: width)
     }
 }
